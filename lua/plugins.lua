@@ -23,8 +23,8 @@ vim.g.mapleader = ' '
 local plugins = {
 
   -- ── Colorscheme ───────────────────────────────────────────
-  { 'rebelot/kanagawa.nvim', name = 'kanagawa', priority = 1000 },
-  -- { "savq/melange-nvim", name = 'melange', priority = 1000 },
+  -- { 'rebelot/kanagawa.nvim', name = 'kanagawa', priority = 1000 },
+  { "savq/melange-nvim", name = 'melange', priority = 1000 },
 
   -- ── Core utilities ────────────────────────────────────────
   'nvim-lua/plenary.nvim',
@@ -206,11 +206,12 @@ require('lualine').setup({
   options = {
     icons_enabled       = true,
     theme               = 'auto',
-    component_separators = '|',
+    component_separators = ' ',
     section_separators  = '',
   },
   sections = {
-    lualine_a = { { 'buffers' } },
+    lualine_a = { { 'filename' } ,
+},
   },
 })
 
@@ -271,9 +272,9 @@ require('aerial').setup({
 vim.keymap.set('n', '<leader>a', '<cmd>AerialToggle!<CR>', { desc = 'Toggle aerial' })
 
 -- ── Kanagawa colorscheme ─────────────────────────────────────
-require('kanagawa').setup({
-  -- Uncomment to customise:
-  theme      = 'dragon',
-  -- transparent = true,
-  -- background = { dark = 'dragon', light = 'lotus' },
-})
+-- require('kanagawa').setup({
+--   -- Uncomment to customise:
+--   theme      = 'dragon',
+--   -- transparent = true,
+--   -- background = { dark = 'dragon', light = 'lotus' },
+-- })
