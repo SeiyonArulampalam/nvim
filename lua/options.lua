@@ -31,3 +31,5 @@ vim.opt.cursorline = false
 
 vim.opt.background = "dark" -- colorschemes that can be light or dark will be made dark
 vim.opt.signcolumn = "yes" -- show sign column so that text doesn't shift
+
+vim.opt.termguicolors = true
