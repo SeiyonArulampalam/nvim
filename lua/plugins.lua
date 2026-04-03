@@ -246,16 +246,6 @@ require('gitsigns').setup({
 })
 
 -- ── Treesitter ───────────────────────────────────────────────
-require('nvim-treesitter.configs').setup({
-  ensure_installed = { 'c', 'cpp', 'python', 'bash', 'lua' },
-  sync_install     = false,
-  highlight        = { enable = true },
-  disable = function(_, buf)
-    local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
-    return ok and stats and stats.size > 100 * 1024  -- skip files > 100 KB
-  end,
-})
-
 require('treesitter-context').setup({
   mode                = 'topline',
   multiline_threshold = 1,
