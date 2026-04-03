@@ -23,7 +23,6 @@ vim.g.mapleader = ' '
 local plugins = {
 
   -- ── Colorscheme ───────────────────────────────────────────
-  -- { 'rebelot/kanagawa.nvim', name = 'kanagawa', priority = 1000 },
   { "savq/melange-nvim", name = 'melange', priority = 1000 },
 
   -- ── Core utilities ────────────────────────────────────────
@@ -42,10 +41,8 @@ local plugins = {
   'neovim/nvim-lspconfig',
   'williamboman/mason.nvim',
   'williamboman/mason-lspconfig.nvim',
-  -- null-ls REMOVED (archived 2023) → replaced by conform.nvim below
 
-  -- ── Formatting (replaces null-ls) ─────────────────────────
-  --  Install formatters via :Mason  (black, clang-format, stylua)
+  -- ── Formatting ────────────────────────────────────────────
   {
     'stevearc/conform.nvim',
     event = { 'BufWritePre' },
@@ -72,9 +69,9 @@ local plugins = {
   'L3MON4D3/LuaSnip',
   'saadparwaiz1/cmp_luasnip',
   'rafamadriz/friendly-snippets',
+  'onsails/lspkind.nvim',
 
   -- ── Function signature hints ──────────────────────────────
-  --  Config lives here in opts — do NOT call setup() again below.
   {
     'ray-x/lsp_signature.nvim',
     event = 'InsertEnter',
@@ -128,11 +125,27 @@ local plugins = {
   {
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
+    opts = {
+      ensure_installed = { 'c', 'cpp', 'python', 'bash', 'lua' },
+      sync_install     = false,
+      highlight        = { enable = true },
+      indent           = { enable = true },
+    },
   },
-  'nvim-treesitter/nvim-treesitter-context',
+
+  {
+    'nvim-treesitter/nvim-treesitter-context',
+    opts = {
+      mode                = 'topline',
+      multiline_threshold = 1,
+    },
+    config = function(_, opts)
+      require('treesitter-context').setup(opts)
+      vim.api.nvim_set_hl(0, 'TreesitterContextBottom', { underline = true, sp = 'Grey' })
+    end,
+  },
 
   -- ── Symbol outline ────────────────────────────────────────
-  --  symbols-outline.nvim was archived; outline.nvim is the active fork.
   {
     'hedyhli/outline.nvim',
     cmd  = { 'Outline', 'OutlineOpen' },
@@ -145,8 +158,16 @@ local plugins = {
   -- ── Aerial (symbol navigator) ─────────────────────────────
   {
     'stevearc/aerial.nvim',
-    opts         = {},
     dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' },
+    config = function()
+      require('aerial').setup({
+        on_attach = function(bufnr)
+          vim.keymap.set('n', '{', '<cmd>AerialPrev<CR>', { buffer = bufnr })
+          vim.keymap.set('n', '}', '<cmd>AerialNext<CR>', { buffer = bufnr })
+        end,
+      })
+      vim.keymap.set('n', '<leader>a', '<cmd>AerialToggle!<CR>', { desc = 'Toggle aerial' })
+    end,
   },
 
   -- ── Diagnostics panel ─────────────────────────────────────
@@ -183,7 +204,6 @@ require('lazy').setup(plugins, opts)
 
 -- ============================================================
 --  Plugin setup
---  (only plugins that can't be fully configured via `opts` above)
 -- ============================================================
 
 -- ── indent-blankline ────────────────────────────────────────
@@ -196,7 +216,7 @@ require('trim').setup()
 require('Comment').setup()
 
 -- ── nvim-tree ────────────────────────────────────────────────
-vim.g.loaded_netrw       = 1   -- disable netrw in favour of nvim-tree
+vim.g.loaded_netrw       = 1
 vim.g.loaded_netrwPlugin = 1
 vim.opt.termguicolors    = true
 require('nvim-tree').setup()
@@ -204,14 +224,13 @@ require('nvim-tree').setup()
 -- ── Lualine ──────────────────────────────────────────────────
 require('lualine').setup({
   options = {
-    icons_enabled       = true,
-    theme               = 'auto',
+    icons_enabled        = true,
+    theme                = 'auto',
     component_separators = ' ',
-    section_separators  = '',
+    section_separators   = '',
   },
   sections = {
-    lualine_a = { { 'filename' } ,
-},
+    lualine_a = { { 'filename' } },
   },
 })
 
@@ -228,43 +247,19 @@ require('gitsigns').setup({
     map('n', '[c', function() if vim.wo.diff then vim.cmd.normal({'[c', bang=true}) else gs.nav_hunk('prev') end end, 'Prev hunk')
 
     -- Actions
-    map('n', '<leader>hs', gs.stage_hunk,                                                     'Stage hunk')
-    map('n', '<leader>hr', gs.reset_hunk,                                                     'Reset hunk')
+    map('n', '<leader>hs', gs.stage_hunk,                                                       'Stage hunk')
+    map('n', '<leader>hr', gs.reset_hunk,                                                       'Reset hunk')
     map('v', '<leader>hs', function() gs.stage_hunk { vim.fn.line('.'), vim.fn.line('v') } end, 'Stage hunk')
     map('v', '<leader>hr', function() gs.reset_hunk { vim.fn.line('.'), vim.fn.line('v') } end, 'Reset hunk')
-    map('n', '<leader>hS', gs.stage_buffer,                                                   'Stage buffer')
-    map('n', '<leader>hu', gs.undo_stage_hunk,                                                'Undo stage hunk')
-    map('n', '<leader>hR', gs.reset_buffer,                                                   'Reset buffer')
-    map('n', '<leader>hp', gs.preview_hunk,                                                   'Preview hunk')
-    map('n', '<leader>hb', function() gs.blame_line { full = true } end,                      'Blame line')
-    map('n', '<leader>tb', gs.toggle_current_line_blame,                                      'Toggle blame')
-    map('n', '<leader>hd', gs.diffthis,                                                       'Diff this')
-    map('n', '<leader>hD', function() gs.diffthis('~') end,                                   'Diff this ~')
-    map('n', '<leader>td', gs.toggle_deleted,                                                  'Toggle deleted')
-    map({ 'o', 'x' }, 'ih', ':<C-U>Gitsigns select_hunk<CR>',                                'Select hunk')
+    map('n', '<leader>hS', gs.stage_buffer,                                                     'Stage buffer')
+    map('n', '<leader>hu', gs.undo_stage_hunk,                                                  'Undo stage hunk')
+    map('n', '<leader>hR', gs.reset_buffer,                                                     'Reset buffer')
+    map('n', '<leader>hp', gs.preview_hunk,                                                     'Preview hunk')
+    map('n', '<leader>hb', function() gs.blame_line { full = true } end,                        'Blame line')
+    map('n', '<leader>tb', gs.toggle_current_line_blame,                                        'Toggle blame')
+    map('n', '<leader>hd', gs.diffthis,                                                         'Diff this')
+    map('n', '<leader>hD', function() gs.diffthis('~') end,                                     'Diff this ~')
+    map('n', '<leader>td', gs.toggle_deleted,                                                   'Toggle deleted')
+    map({ 'o', 'x' }, 'ih', ':<C-U>Gitsigns select_hunk<CR>',                                  'Select hunk')
   end,
 })
-
--- ── Treesitter ───────────────────────────────────────────────
-require('treesitter-context').setup({
-  mode                = 'topline',
-  multiline_threshold = 1,
-})
-vim.api.nvim_set_hl(0, 'TreesitterContextBottom', { underline = true, special = 'Grey' })
-
--- ── Aerial ───────────────────────────────────────────────────
-require('aerial').setup({
-  on_attach = function(bufnr)
-    vim.keymap.set('n', '{', '<cmd>AerialPrev<CR>', { buffer = bufnr })
-    vim.keymap.set('n', '}', '<cmd>AerialNext<CR>', { buffer = bufnr })
-  end,
-})
-vim.keymap.set('n', '<leader>a', '<cmd>AerialToggle!<CR>', { desc = 'Toggle aerial' })
-
--- ── Kanagawa colorscheme ─────────────────────────────────────
--- require('kanagawa').setup({
---   -- Uncomment to customise:
---   theme      = 'dragon',
---   -- transparent = true,
---   -- background = { dark = 'dragon', light = 'lotus' },
--- })

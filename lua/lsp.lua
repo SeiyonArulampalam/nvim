@@ -103,9 +103,9 @@ vim.diagnostic.config({
 
 -- ── 7. Autocompletion ───────────────────────────────────────
 require('luasnip.loaders.from_vscode').lazy_load()
-
 local cmp     = require('cmp')
 local luasnip = require('luasnip')
+local lspkind = require('lspkind')
 
 cmp.setup({
   snippet = {
@@ -114,13 +114,19 @@ cmp.setup({
     end,
   },
 
+  performance = {
+    debounce         = 60,
+    throttle         = 30,
+    fetching_timeout = 500,
+    max_view_entries = 15,
+  },
+
   mapping = cmp.mapping.preset.insert({
     ['<C-d>']     = cmp.mapping.scroll_docs(-4),
     ['<C-f>']     = cmp.mapping.scroll_docs(4),
     ['<C-Space>'] = cmp.mapping.complete(),
     ['<C-e>']     = cmp.mapping.abort(),
     ['<CR>']      = cmp.mapping.confirm({ select = true }),
-
     ['<Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_next_item()
@@ -130,7 +136,6 @@ cmp.setup({
         fallback()
       end
     end, { 'i', 's' }),
-
     ['<S-Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_prev_item()
@@ -142,6 +147,22 @@ cmp.setup({
     end, { 'i', 's' }),
   }),
 
+  formatting = {
+    fields = { "kind", "abbr", "menu" },
+    format = lspkind.cmp_format({
+      mode         = "symbol_text",
+      maxwidth     = 50,
+      ellipsis_char = "…",
+      menu = {
+        nvim_lsp = "[LSP]",
+        luasnip  = "[Snip]",
+        nvim_lua = "[Lua]",
+        buffer   = "[Buf]",
+        path     = "[Path]",
+      },
+    }),
+  },
+
   sources = cmp.config.sources({
     { name = 'nvim_lsp' },
     { name = 'nvim_lua' },
@@ -151,10 +172,37 @@ cmp.setup({
     { name = 'buffer', keyword_length = 5 },
   }),
 
+  sorting = {
+    comparators = {
+      cmp.config.compare.offset,
+      cmp.config.compare.exact,
+      cmp.config.compare.score,
+      function(a, b)
+        local a_under = (a.completion_item.label:find("^_") ~= nil)
+        local b_under = (b.completion_item.label:find("^_") ~= nil)
+        if a_under ~= b_under then return not a_under end
+      end,
+      cmp.config.compare.kind,
+      cmp.config.compare.sort_text,
+      cmp.config.compare.length,
+      cmp.config.compare.order,
+    },
+  },
+
   window = {
-    completion    = cmp.config.window.bordered(),
-    documentation = cmp.config.window.bordered(),
-    border = "rounded",
-    winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder",
+    completion = cmp.config.window.bordered({
+      border       = "rounded",
+      winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:PmenuSel",
+      scrollbar    = false,
+    }),
+    documentation = cmp.config.window.bordered({
+      border       = "rounded",
+      winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder",
+      scrollbar    = false,
+    }),
+  },
+
+  experimental = {
+    ghost_text = { hl_group = "Comment" },
   },
 })
