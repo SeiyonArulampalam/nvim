@@ -2,4 +2,5 @@
 -- vim.cmd.colorscheme "kanagawa-wave"
 -- vim.cmd.colorscheme "melange"
 -- vim.cmd.colorscheme "everforest"
-vim.cmd.colorscheme "catppuccin-mocha"
+-- vim.cmd.colorscheme "catppuccin-mocha"
+vim.cmd.colorscheme "evergarden"
