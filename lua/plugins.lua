@@ -23,8 +23,8 @@ vim.g.mapleader = ' '
 local plugins = {
 
   -- ── Colorscheme ───────────────────────────────────────────
-  -- { "savq/melange-nvim", name = 'melange', priority = 1000 },
-  { "sainnhe/everforest", name = 'hard', priority = 1000 },
+  { "savq/melange-nvim", name = 'melange', priority = 1000 },
+  -- { "sainnhe/everforest", name = 'hard', priority = 1000 },
 
   -- ── Core utilities ────────────────────────────────────────
   'nvim-lua/plenary.nvim',
@@ -187,6 +187,29 @@ local plugins = {
   -- ── Utilities ─────────────────────────────────────────────
   'cappyzawa/trim.nvim',
   'numToStr/Comment.nvim',
+
+  -- ── Peek definition ───────────────────────────────────────
+{
+  'rmagatti/goto-preview',
+  config = function()
+    require('goto-preview').setup({
+      width              = 120,
+      height             = 30,
+      border             = 'rounded',
+      default_mappings   = false,
+      dismiss_on_move    = false,
+      preview_window_title = { enable = true },
+      post_open_hook = function(buf, _)
+        vim.keymap.set('n', 'q', '<cmd>quit<CR>', { buffer = buf, desc = 'Close preview' })
+      end,
+    })
+
+    vim.keymap.set("n", "<leader>pd", require('goto-preview').goto_preview_definition,     { desc = 'Preview definition' })
+    vim.keymap.set("n", "<leader>pi", require('goto-preview').goto_preview_implementation, { desc = 'Preview implementation' })
+    vim.keymap.set("n", "<leader>pr", require('goto-preview').goto_preview_references,     { desc = 'Preview references' })
+    vim.keymap.set("n", "<leader>pc", require('goto-preview').close_all_win,               { desc = 'Close preview windows' })
+  end,
+},
 }
 
 -- ── Lazy options ────────────────────────────────────────────
