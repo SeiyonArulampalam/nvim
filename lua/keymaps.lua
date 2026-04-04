@@ -52,3 +52,9 @@ vim.keymap.set("n", "<leader>gd", "<cmd>lua vim.lsp.buf.definition()<Enter>", op
 -- refresh the file explorer
 vim.keymap.set("n", "<leader>er", "<cmd>NvimTreeRefresh<CR>", { desc = "Refresh file explorer" })
 vim.keymap.set("n", "<leader>ex", ":NvimTreeToggle<Enter>", vim.tbl_extend("force", opts, {desc = "Close file explorer"}))
+
+-- refernce window lua
+local ref = require('reference')
+vim.keymap.set('n', '<leader>rp', ref.toggle,      { desc = 'Toggle reference panel' })
+vim.keymap.set('n', '<leader>rj', ref.scroll_down, { desc = 'Scroll reference down' })
+vim.keymap.set('n', '<leader>rk', ref.scroll_up,   { desc = 'Scroll reference up' })
