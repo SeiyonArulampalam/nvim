@@ -48,6 +48,8 @@ local plugins = {
           hl["@constant"]             = { fg = "#4fc1ff" }  
           hl["@type"]                 = { fg = "#4ec9b0" }
           hl["@module"]               = { fg = "#c586c0" }
+          hl["@keyword.function"]        = { fg = "#46a1e1", italic = true }
+          hl["@keyword.function.python"] = { fg = "#46a1e1", italic = true }
         end,
 
         -- Override colors
