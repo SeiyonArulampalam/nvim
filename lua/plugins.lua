@@ -113,7 +113,48 @@ local plugins = {
   },
 
   -- ── Tabs ──────────────────────────────────────────────────
-  'romgrk/barbar.nvim',
+  -- 'romgrk/barbar.nvim',
+  -- ── Bufferline ────────────────────────────────────────────
+  {
+    'akinsho/bufferline.nvim',
+    version = '*',
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    config = function()
+      require('bufferline').setup({
+        options = {
+          mode                    = 'buffers',
+          separator_style         = { '', '' },
+          indicator               = { style = 'none' },
+          show_buffer_icons       = false,
+          show_buffer_close_icons = false,
+          show_close_icon         = false,
+          enforce_regular_tabs    = true,
+          always_show_bufferline  = true,
+          padding                 = 2,
+          offsets = {
+            {
+              filetype  = 'NvimTree',
+              text      = 'File Explorer',
+              highlight = 'Directory',
+              separator = true,
+            },
+          },
+        },
+      })
+
+      -- Buffer navigation (replaces the old barbar keymaps)
+      vim.keymap.set('n', '<leader>th', '<cmd>BufferLineCyclePrev<CR>', { desc = 'Prev buffer' })
+      vim.keymap.set('n', '<leader>tj', '<cmd>BufferLineCyclePrev<CR>', { desc = 'Prev buffer' })
+      vim.keymap.set('n', '<leader>tk', '<cmd>BufferLineCycleNext<CR>', { desc = 'Next buffer' })
+      vim.keymap.set('n', '<leader>tl', '<cmd>BufferLineCycleNext<CR>', { desc = 'Next buffer' })
+      vim.keymap.set('n', '<leader>tx', '<cmd>bdelete<CR>',             { desc = 'Close buffer' })
+
+      -- add color to the bufferline text
+      vim.api.nvim_set_hl(0, 'BufferLineBufferSelected',  { fg = '#c792ea', bold = true })
+      vim.api.nvim_set_hl(0, 'BufferLineBufferVisible',   { fg = '#9d7cd8' })
+      vim.api.nvim_set_hl(0, 'BufferLineBackground',      { fg = '#6d5d8a', bg = 'NONE' })
+    end,
+  },
 
   -- ── Winbar breadcrumbs ────────────────────────────────────
   {

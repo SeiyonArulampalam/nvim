@@ -38,12 +38,6 @@ vim.keymap.set('n', '<leader>fb', builtin.buffers, vim.tbl_extend("force", opts,
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, vim.tbl_extend("force", opts, {desc = "Help tags"}))
 builtin = nil
 
--- move between buffers
-vim.keymap.set('n', '<leader>th', ':bprevious<Enter>', vim.tbl_extend("force", opts, {desc = "Previous buffer"}))
-vim.keymap.set('n', '<leader>tj', ':bprevious<Enter>', vim.tbl_extend("force", opts, {desc = "Previous buffer"}))
-vim.keymap.set('n', '<leader>tk', ':bnext<Enter>', vim.tbl_extend("force", opts, {desc = "Next buffer"}))
-vim.keymap.set('n', '<leader>tl', ':bnext<Enter>', vim.tbl_extend("force", opts, {desc = "Next buffer"}))
-
 -- move between tabs
 vim.keymap.set('n', 'tn', ':tabnext<Enter>', opts)
 vim.keymap.set('n', 'tp', ':tabprevious<Enter>', opts)
