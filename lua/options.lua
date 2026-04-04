@@ -34,3 +34,12 @@ vim.opt.signcolumn = "yes" -- show sign column so that text doesn't shift
 
 vim.opt.termguicolors = true
 
+-- Autosave on leaving insert mode or when text changes
+vim.api.nvim_create_autocmd({ 'InsertLeave', 'TextChanged' }, {
+  pattern = '*',
+  callback = function()
+    if vim.bo.modified and vim.bo.buftype == '' and vim.fn.expand('%') ~= '' then
+      vim.cmd('silent! write')
+    end
+  end,
+})
