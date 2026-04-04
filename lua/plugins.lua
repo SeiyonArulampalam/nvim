@@ -334,7 +334,44 @@ require('Comment').setup()
 vim.g.loaded_netrw       = 1
 vim.g.loaded_netrwPlugin = 1
 vim.opt.termguicolors    = true
-require('nvim-tree').setup()
+require('nvim-tree').setup({
+  sort = {
+    sorter = 'case_sensitive',
+  },
+  view = {
+    width = 35,
+    float = {
+      enable             = true,
+      quit_on_focus_loss = true,
+      open_win_config = function()
+        local width  = 35
+        local height = math.floor(vim.o.lines * 0.85)
+        return {
+          relative = 'editor',
+          border   = 'rounded',
+          width    = width,
+          height   = height,
+          row      = 2,
+          col      = 2,
+        }
+      end,
+    },
+  },
+  renderer = {
+    group_empty = true,
+    icons = {
+      show = {
+        file         = true,
+        folder       = true,
+        folder_arrow = true,
+        git          = true,
+      },
+    },
+  },
+  filters = {
+    dotfiles = false,
+  },
+})
 
 -- ── Lualine ──────────────────────────────────────────────────
 -- stylua: ignore
