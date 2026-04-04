@@ -22,8 +22,11 @@ M.toggle = function()
         vim.fn.bufload(buf)
 
         local width  = math.floor(vim.o.columns * 0.4)
-        local height = math.floor(vim.o.lines * 0.7)
+        local height = math.floor(vim.o.lines * 0.85)
         local filename = vim.fn.fnamemodify(filepath, ':t')
+
+        -- set the background color
+        vim.api.nvim_set_hl(0, 'ReferenceFloat', { bg = '#0f0f0f' }) 
 
         win = vim.api.nvim_open_win(buf, false, {
             relative  = 'editor',
@@ -42,10 +45,10 @@ M.toggle = function()
         -- Padding and appearance
         vim.wo[win].wrap           = true
         vim.wo[win].number         = false
-        vim.wo[win].relativenumber = false
+        vim.wo[win].relativenumber = true
         vim.wo[win].signcolumn     = 'no'
         vim.wo[win].winblend       = 50   -- slight transparency
-        vim.wo[win].winhighlight   = 'Normal:NormalFloat,FloatBorder:FloatBorder'
+        vim.wo[win].winhighlight   = 'Normal:ReferenceFloat,FloatBorder:FloatBorder'  -- ← point to custom group
       end)
       return true
     end,
