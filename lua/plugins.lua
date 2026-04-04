@@ -26,7 +26,60 @@ local plugins = {
   -- { "savq/melange-nvim", name = 'melange', priority = 1000 },
   -- { "sainnhe/everforest", name = 'hard', priority = 1000 },
   -- { "catppuccin/nvim", name = "mocha", priority = 1000 },
-  {'everviolet/nvim', name = 'evergarden', priority = 1000},
+  -- {'everviolet/nvim', name = 'evergarden', priority = 1000},
+  {
+    "vague-theme/vague.nvim",
+    lazy = false, -- make sure we load this during startup if it is your main colorscheme
+    priority = 1000, -- make sure to load this before all the other plugins
+    config = function()
+      -- NOTE: you do not need to call setup if you don't want to.
+      require("vague").setup({
+        -- Don't set background
+        transparent = false,
+        -- Disable bold/italic globally
+        bold = true,
+        italic = true,
+
+        -- Override highlights or add new highlights
+        on_highlights = function(hl, colors)
+          hl["@variable"]             = { fg = "#9cdcfe" } 
+          hl["@function.method.call"] = { fg = "#dcdcaa" } 
+          hl["@constructor"]          = { fg = "#4ec9b0" } 
+          hl["@constant"]             = { fg = "#4fc1ff" }  
+          hl["@type"]                 = { fg = "#4ec9b0" }
+          hl["@module"]               = { fg = "#c586c0" }
+        end,
+
+        -- Override colors
+        colors = {
+          bg = "#222223",
+          inactiveBg = "#1c1c24",
+          fg = "#cdcdcd",
+          floatBorder = "#878787",
+          line = "#252530",
+          comment = "#60796b",
+          builtin = "#b4d4cf",
+          func = "#cc8cee",
+          string = "#e8b589",
+          number = "#e0a363",
+          property = "#34b1ef",
+          constant = "#aeaed1",
+          parameter = "#ec913b",
+          visual = "#333738",
+          error = "#d8647e",
+          warning = "#f3be7c",
+          hint = "#7e98e8",
+          operator = "#90a0b5",
+          keyword = "#46a1e1",
+          type = "#9bb4bc",
+          search = "#405065",
+          plus = "#7fa563",
+          delta = "#f3be7c",
+        },
+      })
+      vim.cmd("colorscheme vague")
+    end
+  },
 
   -- ── Core utilities ────────────────────────────────────────
   'nvim-lua/plenary.nvim',

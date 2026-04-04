@@ -3,4 +3,5 @@
 -- vim.cmd.colorscheme "melange"
 -- vim.cmd.colorscheme "everforest"
 -- vim.cmd.colorscheme "catppuccin-mocha"
-vim.cmd.colorscheme "evergarden"
+-- vim.cmd.colorscheme "evergarden"
+vim.cmd.colorscheme "vague"
