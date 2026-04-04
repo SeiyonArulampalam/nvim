@@ -23,7 +23,8 @@ vim.g.mapleader = ' '
 local plugins = {
 
   -- ── Colorscheme ───────────────────────────────────────────
-  { "savq/melange-nvim", name = 'melange', priority = 1000 },
+  -- { "savq/melange-nvim", name = 'melange', priority = 1000 },
+  { "sainnhe/everforest", name = 'hard', priority = 1000 },
 
   -- ── Core utilities ────────────────────────────────────────
   'nvim-lua/plenary.nvim',
@@ -122,28 +123,27 @@ local plugins = {
   },
 
   -- ── Treesitter ────────────────────────────────────────────
-  {
-    'nvim-treesitter/nvim-treesitter',
-    build = ':TSUpdate',
-    opts = {
-      ensure_installed = { 'c', 'cpp', 'python', 'bash', 'lua' },
-      sync_install     = false,
-      highlight        = { enable = true },
-      indent           = { enable = true },
-    },
-  },
+{
+  'nvim-treesitter/nvim-treesitter',
+  build = ':TSUpdate',
+  config = function()
+    require('nvim-treesitter').setup({
+      ensure_installed = { 'c', 'cpp', 'python', 'bash', 'lua', 'cmake' },
+      auto_install     = true,
+    })
+  end,
+},
 
-  {
-    'nvim-treesitter/nvim-treesitter-context',
-    opts = {
+{
+  'nvim-treesitter/nvim-treesitter-context',
+  config = function()
+    require('treesitter-context').setup({
       mode                = 'topline',
       multiline_threshold = 1,
-    },
-    config = function(_, opts)
-      require('treesitter-context').setup(opts)
-      vim.api.nvim_set_hl(0, 'TreesitterContextBottom', { underline = true, sp = 'Grey' })
-    end,
-  },
+    })
+    vim.api.nvim_set_hl(0, 'TreesitterContextBottom', { underline = true, sp = 'Grey' })
+  end,
+},
 
   -- ── Symbol outline ────────────────────────────────────────
   {

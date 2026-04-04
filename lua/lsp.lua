@@ -206,3 +206,29 @@ cmp.setup({
     ghost_text = { hl_group = "Comment" },
   },
 })
+
+-- ── 8. Semantic token highlight overrides ───────────────────
+local function set_semantic_highlights()
+  vim.api.nvim_set_hl(0, '@lsp.type.namespace',     { link = '@module' })
+  vim.api.nvim_set_hl(0, '@lsp.type.module',        { bold = true, fg = '#e8b45f' })
+  vim.api.nvim_set_hl(0, '@lsp.type.class',         { fg = '#7fbfff', bold = true })
+  vim.api.nvim_set_hl(0, '@lsp.type.interface',     { fg = '#7fbfff', italic = true })
+  vim.api.nvim_set_hl(0, '@lsp.type.enum',          { fg = '#c0a060' })
+  vim.api.nvim_set_hl(0, '@lsp.type.enumMember',    { fg = '#b8d7a3' })
+  vim.api.nvim_set_hl(0, '@lsp.type.parameter',     { italic = true })
+  vim.api.nvim_set_hl(0, '@lsp.type.property',      { fg = '#9cdcfe' })
+  vim.api.nvim_set_hl(0, '@lsp.type.type',          { fg = '#4ec9b0' })
+  vim.api.nvim_set_hl(0, '@lsp.mod.readonly',       { italic = true })
+  vim.api.nvim_set_hl(0, '@lsp.mod.deprecated',     { strikethrough = true })
+  vim.api.nvim_set_hl(0, '@lsp.mod.defaultLibrary', { italic = true })
+end
+
+vim.api.nvim_create_autocmd('ColorScheme', {
+  callback = set_semantic_highlights,
+})
+
+-- Only run after colorscheme has already loaded
+vim.api.nvim_create_autocmd('VimEnter', {
+  once = true,
+  callback = set_semantic_highlights,
+})
