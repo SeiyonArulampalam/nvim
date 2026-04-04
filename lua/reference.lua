@@ -26,7 +26,7 @@ M.toggle = function()
         local filename = vim.fn.fnamemodify(filepath, ':t')
 
         -- set the background color
-        vim.api.nvim_set_hl(0, 'ReferenceFloat', { bg = '#0f0f0f' }) 
+        vim.api.nvim_set_hl(0, 'ReferenceFloat', { bg = '#303030' }) 
 
         win = vim.api.nvim_open_win(buf, false, {
             relative  = 'editor',

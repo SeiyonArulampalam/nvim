@@ -54,7 +54,7 @@ local plugins = {
 
         -- Override colors
         colors = {
-          bg = "#222223",
+          bg = "#1c1b1b",
           inactiveBg = "#1c1c24",
           fg = "#cdcdcd",
           floatBorder = "#878787",
