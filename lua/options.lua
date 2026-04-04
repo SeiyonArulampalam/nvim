@@ -43,3 +43,13 @@ vim.api.nvim_create_autocmd({ 'InsertLeave', 'TextChanged' }, {
     end
   end,
 })
+
+-- turn of highlighting automatically
+vim.api.nvim_create_autocmd('CmdlineLeave', {
+  pattern = { '/', '?' },
+  callback = function()
+    vim.schedule(function()
+      vim.cmd('nohlsearch')
+    end)
+  end,
+})
