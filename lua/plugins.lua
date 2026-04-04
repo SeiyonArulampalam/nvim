@@ -23,8 +23,9 @@ vim.g.mapleader = ' '
 local plugins = {
 
   -- ── Colorscheme ───────────────────────────────────────────
-  { "savq/melange-nvim", name = 'melange', priority = 1000 },
+  -- { "savq/melange-nvim", name = 'melange', priority = 1000 },
   -- { "sainnhe/everforest", name = 'hard', priority = 1000 },
+  { "catppuccin/nvim", name = "mocha", priority = 1000 },
 
   -- ── Core utilities ────────────────────────────────────────
   'nvim-lua/plenary.nvim',
