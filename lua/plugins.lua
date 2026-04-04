@@ -126,12 +126,6 @@ local plugins = {
 {
   'nvim-treesitter/nvim-treesitter',
   build = ':TSUpdate',
-  config = function()
-    require('nvim-treesitter').setup({
-      ensure_installed = { 'c', 'cpp', 'python', 'bash', 'lua', 'cmake' },
-      auto_install     = true,
-    })
-  end,
 },
 
 {

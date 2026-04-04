@@ -223,6 +223,13 @@ local function set_semantic_highlights()
   vim.api.nvim_set_hl(0, '@lsp.mod.defaultLibrary', { italic = true })
 end
 
+vim.api.nvim_create_autocmd('BufEnter', {
+  pattern = { '*.py', '*.c', '*.cpp', '*.lua', '*.sh', '*.cmake' },
+  callback = function()
+    local ok, _ = pcall(vim.treesitter.start)
+    if not ok then return end
+  end,
+})
 vim.api.nvim_create_autocmd('ColorScheme', {
   callback = set_semantic_highlights,
 })
