@@ -95,6 +95,31 @@ local plugins = {
   -- ── Keybinding hints ──────────────────────────────────────
   'folke/which-key.nvim',
 
+  -- ── UI input/select popups ────────────────────────────────
+  {
+    'stevearc/dressing.nvim',
+    config = function()
+      require('dressing').setup({
+        input = {
+          enabled      = true,
+          border       = 'rounded',
+          relative     = 'cursor',   -- popup appears near your cursor
+          win_options  = {
+            winblend   = 0,
+            winhighlight = 'Normal:NormalFloat,FloatBorder:FloatBorder',
+          },
+        },
+        select = {
+          enabled  = true,
+          backend  = { 'telescope' },  -- uses telescope for select menus
+          telescope = require('telescope.themes').get_dropdown({
+            previewer = false,
+          }),
+        },
+      })
+    end,
+  },
+
   -- ── LSP ───────────────────────────────────────────────────
   'neovim/nvim-lspconfig',
   'williamboman/mason.nvim',
