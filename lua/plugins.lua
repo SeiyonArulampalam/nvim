@@ -43,7 +43,7 @@ local plugins = {
         -- Override highlights or add new highlights
         on_highlights = function(hl, colors)
           hl["@variable"]             = { fg = "#9cdcfe" } 
-          hl["@function.method.call"] = { fg = "#dcdcaa" } 
+          hl["@function.method.call"] = { fg = "#dcdcaa", italic = true } 
           hl["@constructor"]          = { fg = "#4ec9b0" } 
           hl["@constant"]             = { fg = "#4fc1ff" }  
           hl["@type"]                 = { fg = "#4ec9b0" }
@@ -322,6 +322,11 @@ local plugins = {
       { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
       { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
     },
+  },
+  -- ── nvim-tree preview ─────────────────────────────────────
+  {
+    'b0o/nvim-tree-preview.lua',
+    dependencies = { 'nvim-tree/nvim-tree.lua' },
   },
 }
 
