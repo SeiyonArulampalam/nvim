@@ -29,7 +29,7 @@ local plugins = {
   -- {'everviolet/nvim', name = 'evergarden', priority = 1000},
   {
     "vague-theme/vague.nvim",
-    lazy = false, -- make sure we load this during startup if it is your main colorscheme
+    lazy = false,    -- make sure we load this during startup if it is your main colorscheme
     priority = 1000, -- make sure to load this before all the other plugins
     config = function()
       -- NOTE: you do not need to call setup if you don't want to.
@@ -42,12 +42,12 @@ local plugins = {
 
         -- Override highlights or add new highlights
         on_highlights = function(hl, colors)
-          hl["@variable"]             = { fg = "#9cdcfe" } 
-          hl["@function.method.call"] = { fg = "#dcdcaa", italic = true } 
-          hl["@constructor"]          = { fg = "#4ec9b0" } 
-          hl["@constant"]             = { fg = "#4fc1ff" }  
-          hl["@type"]                 = { fg = "#4ec9b0" }
-          hl["@module"]               = { fg = "#c586c0" }
+          hl["@variable"]                = { fg = "#9cdcfe" }
+          hl["@function.method.call"]    = { fg = "#dcdcaa", italic = true }
+          hl["@constructor"]             = { fg = "#4ec9b0" }
+          hl["@constant"]                = { fg = "#4fc1ff" }
+          hl["@type"]                    = { fg = "#4ec9b0" }
+          hl["@module"]                  = { fg = "#c586c0" }
           hl["@keyword.function"]        = { fg = "#46a1e1", italic = true }
           hl["@keyword.function.python"] = { fg = "#46a1e1", italic = true }
         end,
@@ -86,6 +86,16 @@ local plugins = {
   -- ── Core utilities ────────────────────────────────────────
   'nvim-lua/plenary.nvim',
 
+  -- ── Harpoon ───────────────────────────────────────────────
+  {
+    'ThePrimeagen/harpoon',
+    branch       = 'harpoon2',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    config       = function()
+      require('harpoon'):setup()
+    end,
+  },
+
   -- ── Fuzzy finder ──────────────────────────────────────────
   {
     'nvim-telescope/telescope.nvim',
@@ -101,17 +111,17 @@ local plugins = {
     config = function()
       require('dressing').setup({
         input = {
-          enabled      = true,
-          border       = 'rounded',
-          relative     = 'cursor',   -- popup appears near your cursor
-          win_options  = {
-            winblend   = 0,
+          enabled     = true,
+          border      = 'rounded',
+          relative    = 'cursor', -- popup appears near your cursor
+          win_options = {
+            winblend     = 0,
             winhighlight = 'Normal:NormalFloat,FloatBorder:FloatBorder',
           },
         },
         select = {
-          enabled  = true,
-          backend  = { 'telescope' },  -- uses telescope for select menus
+          enabled   = true,
+          backend   = { 'telescope' }, -- uses telescope for select menus
           telescope = require('telescope.themes').get_dropdown({
             previewer = false,
           }),
@@ -131,10 +141,10 @@ local plugins = {
     event = { 'BufWritePre' },
     opts = {
       formatters_by_ft = {
-        python  = { 'black' },
-        c       = { 'clang_format' },
-        cpp     = { 'clang_format' },
-        lua     = { 'stylua' },
+        python = { 'black' },
+        c      = { 'clang_format' },
+        cpp    = { 'clang_format' },
+        lua    = { 'stylua' },
       },
       format_on_save = {
         timeout_ms   = 500,
@@ -159,23 +169,23 @@ local plugins = {
     'ray-x/lsp_signature.nvim',
     event = 'InsertEnter',
     opts = {
-      bind             = true,
-      doc_lines        = 10,
-      max_height       = 12,
-      max_width        = 80,
-      floating_window  = true,
+      bind                           = true,
+      doc_lines                      = 10,
+      max_height                     = 12,
+      max_width                      = 80,
+      floating_window                = true,
       floating_window_above_cur_line = true,
-      hint_enable      = true,
-      hint_prefix      = '→ ',
-      hint_scheme      = 'String',
-      hi_parameter     = 'LspSignatureActiveParameter',
-      handler_opts     = { border = 'rounded' },
-      toggle_key       = '<M-x>',
-      select_signature_key = '<M-n>',
-      always_trigger   = false,
-      close_timeout    = 4000,
-      zindex           = 200,
-      timer_interval   = 200,
+      hint_enable                    = true,
+      hint_prefix                    = '→ ',
+      hint_scheme                    = 'String',
+      hi_parameter                   = 'LspSignatureActiveParameter',
+      handler_opts                   = { border = 'rounded' },
+      toggle_key                     = '<M-x>',
+      select_signature_key           = '<M-n>',
+      always_trigger                 = false,
+      close_timeout                  = 4000,
+      zindex                         = 200,
+      timer_interval                 = 200,
     },
   },
 
@@ -211,7 +221,7 @@ local plugins = {
           enforce_regular_tabs    = true,
           always_show_bufferline  = true,
           padding                 = 2,
-          offsets = {
+          offsets                 = {
             {
               filetype  = 'NvimTree',
               text      = 'File Explorer',
@@ -227,12 +237,12 @@ local plugins = {
       vim.keymap.set('n', '<leader>tj', '<cmd>BufferLineCyclePrev<CR>', { desc = 'Prev buffer' })
       vim.keymap.set('n', '<leader>tk', '<cmd>BufferLineCycleNext<CR>', { desc = 'Next buffer' })
       vim.keymap.set('n', '<leader>tl', '<cmd>BufferLineCycleNext<CR>', { desc = 'Next buffer' })
-      vim.keymap.set('n', '<leader>tx', '<cmd>bdelete<CR>',             { desc = 'Close buffer' })
+      vim.keymap.set('n', '<leader>tx', '<cmd>bdelete<CR>', { desc = 'Close buffer' })
 
       -- add color to the bufferline text
-      vim.api.nvim_set_hl(0, 'BufferLineBufferSelected',  { fg = '#c792ea', bold = true })
-      vim.api.nvim_set_hl(0, 'BufferLineBufferVisible',   { fg = '#9d7cd8' })
-      vim.api.nvim_set_hl(0, 'BufferLineBackground',      { fg = '#6d5d8a', bg = 'NONE' })
+      vim.api.nvim_set_hl(0, 'BufferLineBufferSelected', { fg = '#c792ea', bold = true })
+      vim.api.nvim_set_hl(0, 'BufferLineBufferVisible', { fg = '#9d7cd8' })
+      vim.api.nvim_set_hl(0, 'BufferLineBackground', { fg = '#6d5d8a', bg = 'NONE' })
     end,
   },
 
@@ -246,21 +256,21 @@ local plugins = {
   },
 
   -- ── Treesitter ────────────────────────────────────────────
-{
-  'nvim-treesitter/nvim-treesitter',
-  build = ':TSUpdate',
-},
+  {
+    'nvim-treesitter/nvim-treesitter',
+    build = ':TSUpdate',
+  },
 
-{
-  'nvim-treesitter/nvim-treesitter-context',
-  config = function()
-    require('treesitter-context').setup({
-      mode                = 'topline',
-      multiline_threshold = 1,
-    })
-    vim.api.nvim_set_hl(0, 'TreesitterContextBottom', { underline = true, sp = 'Grey' })
-  end,
-},
+  {
+    'nvim-treesitter/nvim-treesitter-context',
+    config = function()
+      require('treesitter-context').setup({
+        mode                = 'topline',
+        multiline_threshold = 1,
+      })
+      vim.api.nvim_set_hl(0, 'TreesitterContextBottom', { underline = true, sp = 'Grey' })
+    end,
+  },
 
   -- ── Symbol outline ────────────────────────────────────────
   {
@@ -292,12 +302,12 @@ local plugins = {
     'folke/trouble.nvim',
     opts = {},
     keys = {
-      { '<leader>xx', '<cmd>Trouble diagnostics toggle<cr>',              desc = 'Diagnostics (Trouble)' },
-      { '<leader>xX', '<cmd>Trouble diagnostics toggle filter.buf=0<cr>', desc = 'Buffer Diagnostics (Trouble)' },
-      { '<leader>cs', '<cmd>Trouble symbols toggle focus=false<cr>',      desc = 'Symbols (Trouble)' },
+      { '<leader>xx', '<cmd>Trouble diagnostics toggle<cr>',                        desc = 'Diagnostics (Trouble)' },
+      { '<leader>xX', '<cmd>Trouble diagnostics toggle filter.buf=0<cr>',           desc = 'Buffer Diagnostics (Trouble)' },
+      { '<leader>cs', '<cmd>Trouble symbols toggle focus=false<cr>',                desc = 'Symbols (Trouble)' },
       { '<leader>cl', '<cmd>Trouble lsp toggle focus=false win.position=right<cr>', desc = 'LSP (Trouble)' },
-      { '<leader>xL', '<cmd>Trouble loclist toggle<cr>',                  desc = 'Location List (Trouble)' },
-      { '<leader>xQ', '<cmd>Trouble qflist toggle<cr>',                   desc = 'Quickfix List (Trouble)' },
+      { '<leader>xL', '<cmd>Trouble loclist toggle<cr>',                            desc = 'Location List (Trouble)' },
+      { '<leader>xQ', '<cmd>Trouble qflist toggle<cr>',                             desc = 'Quickfix List (Trouble)' },
     },
   },
 
@@ -312,27 +322,28 @@ local plugins = {
   'numToStr/Comment.nvim',
 
   -- ── Peek definition ───────────────────────────────────────
-{
-  'rmagatti/goto-preview',
-  config = function()
-    require('goto-preview').setup({
-      width              = 120,
-      height             = 30,
-      border             = 'rounded',
-      default_mappings   = false,
-      dismiss_on_move    = false,
-      preview_window_title = { enable = true },
-      post_open_hook = function(buf, _)
-        vim.keymap.set('n', 'q', '<cmd>quit<CR>', { buffer = buf, desc = 'Close preview' })
-      end,
-    })
+  {
+    'rmagatti/goto-preview',
+    config = function()
+      require('goto-preview').setup({
+        width                = 120,
+        height               = 30,
+        border               = 'rounded',
+        default_mappings     = false,
+        dismiss_on_move      = false,
+        preview_window_title = { enable = true },
+        post_open_hook       = function(buf, _)
+          vim.keymap.set('n', 'q', '<cmd>quit<CR>', { buffer = buf, desc = 'Close preview' })
+        end,
+      })
 
-    vim.keymap.set("n", "<leader>pd", require('goto-preview').goto_preview_definition,     { desc = 'Preview definition' })
-    vim.keymap.set("n", "<leader>pi", require('goto-preview').goto_preview_implementation, { desc = 'Preview implementation' })
-    vim.keymap.set("n", "<leader>pr", require('goto-preview').goto_preview_references,     { desc = 'Preview references' })
-    vim.keymap.set("n", "<leader>pc", require('goto-preview').close_all_win,               { desc = 'Close preview windows' })
-  end,
-},
+      vim.keymap.set("n", "<leader>pd", require('goto-preview').goto_preview_definition, { desc = 'Preview definition' })
+      vim.keymap.set("n", "<leader>pi", require('goto-preview').goto_preview_implementation,
+        { desc = 'Preview implementation' })
+      vim.keymap.set("n", "<leader>pr", require('goto-preview').goto_preview_references, { desc = 'Preview references' })
+      vim.keymap.set("n", "<leader>pc", require('goto-preview').close_all_win, { desc = 'Close preview windows' })
+    end,
+  },
 
   -- flash nvim
   {
@@ -341,11 +352,11 @@ local plugins = {
     ---@type Flash.Config
     opts = {},
     keys = {
-      { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
-      { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
-      { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
-      { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
-      { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
+      { "s",     mode = { "n", "x", "o" }, function() require("flash").jump() end,              desc = "Flash" },
+      { "S",     mode = { "n", "x", "o" }, function() require("flash").treesitter() end,        desc = "Flash Treesitter" },
+      { "r",     mode = "o",               function() require("flash").remote() end,            desc = "Remote Flash" },
+      { "R",     mode = { "o", "x" },      function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+      { "<c-s>", mode = { "c" },           function() require("flash").toggle() end,            desc = "Toggle Flash Search" },
     },
   },
   -- ── nvim-tree preview ─────────────────────────────────────
@@ -388,8 +399,8 @@ require('nvim-tree').setup({
     float = {
       enable             = true,
       quit_on_focus_loss = true,
-      open_win_config = function()
-        local width  = 35
+      open_win_config    = function()
+        local width  = math.floor(vim.o.columns * 0.5)
         local height = math.floor(vim.o.lines * 0.85)
         return {
           relative = 'editor',
@@ -487,23 +498,25 @@ require('gitsigns').setup({
     end
 
     -- Navigation
-    map('n', ']c', function() if vim.wo.diff then vim.cmd.normal({']c', bang=true}) else gs.nav_hunk('next') end end, 'Next hunk')
-    map('n', '[c', function() if vim.wo.diff then vim.cmd.normal({'[c', bang=true}) else gs.nav_hunk('prev') end end, 'Prev hunk')
+    map('n', ']c', function() if vim.wo.diff then vim.cmd.normal({ ']c', bang = true }) else gs.nav_hunk('next') end end,
+      'Next hunk')
+    map('n', '[c', function() if vim.wo.diff then vim.cmd.normal({ '[c', bang = true }) else gs.nav_hunk('prev') end end,
+      'Prev hunk')
 
     -- Actions
-    map('n', '<leader>hs', gs.stage_hunk,                                                       'Stage hunk')
-    map('n', '<leader>hr', gs.reset_hunk,                                                       'Reset hunk')
+    map('n', '<leader>hs', gs.stage_hunk, 'Stage hunk')
+    map('n', '<leader>hr', gs.reset_hunk, 'Reset hunk')
     map('v', '<leader>hs', function() gs.stage_hunk { vim.fn.line('.'), vim.fn.line('v') } end, 'Stage hunk')
     map('v', '<leader>hr', function() gs.reset_hunk { vim.fn.line('.'), vim.fn.line('v') } end, 'Reset hunk')
-    map('n', '<leader>hS', gs.stage_buffer,                                                     'Stage buffer')
-    map('n', '<leader>hu', gs.undo_stage_hunk,                                                  'Undo stage hunk')
-    map('n', '<leader>hR', gs.reset_buffer,                                                     'Reset buffer')
-    map('n', '<leader>hp', gs.preview_hunk,                                                     'Preview hunk')
-    map('n', '<leader>hb', function() gs.blame_line { full = true } end,                        'Blame line')
-    map('n', '<leader>tb', gs.toggle_current_line_blame,                                        'Toggle blame')
-    map('n', '<leader>hd', gs.diffthis,                                                         'Diff this')
-    map('n', '<leader>hD', function() gs.diffthis('~') end,                                     'Diff this ~')
-    map('n', '<leader>td', gs.toggle_deleted,                                                   'Toggle deleted')
-    map({ 'o', 'x' }, 'ih', ':<C-U>Gitsigns select_hunk<CR>',                                  'Select hunk')
+    map('n', '<leader>hS', gs.stage_buffer, 'Stage buffer')
+    map('n', '<leader>hu', gs.undo_stage_hunk, 'Undo stage hunk')
+    map('n', '<leader>hR', gs.reset_buffer, 'Reset buffer')
+    map('n', '<leader>hp', gs.preview_hunk, 'Preview hunk')
+    map('n', '<leader>hb', function() gs.blame_line { full = true } end, 'Blame line')
+    map('n', '<leader>tb', gs.toggle_current_line_blame, 'Toggle blame')
+    map('n', '<leader>hd', gs.diffthis, 'Diff this')
+    map('n', '<leader>hD', function() gs.diffthis('~') end, 'Diff this ~')
+    map('n', '<leader>td', gs.toggle_deleted, 'Toggle deleted')
+    map({ 'o', 'x' }, 'ih', ':<C-U>Gitsigns select_hunk<CR>', 'Select hunk')
   end,
 })

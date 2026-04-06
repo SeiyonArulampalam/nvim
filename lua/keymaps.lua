@@ -3,8 +3,8 @@
 
 -- define common options
 local opts = {
-    noremap = true,      -- non-recursive
-    silent = false,      -- do show message
+  noremap = true, -- non-recursive
+  silent = false, -- do show message
 }
 
 -----------------
@@ -17,9 +17,9 @@ local opts = {
 -- vim.keymap.set('n', '<C-w>-', ':split<Enter>', opts)
 
 -- Window maganement
-vim.keymap.set("n", "<leader>sv", "<C-w>v", { desc = "Split window vertically" }) -- split window vertically
-vim.keymap.set("n", "<leader>sh", "<C-w>s", { desc = "Split window horizontally" }) -- split window horizontally
-vim.keymap.set("n", "<leader>se", "<C-w>=", { desc = "Make splits equal size" }) -- make split windows equal width & height
+vim.keymap.set("n", "<leader>sv", "<C-w>v", { desc = "Split window vertically" })     -- split window vertically
+vim.keymap.set("n", "<leader>sh", "<C-w>s", { desc = "Split window horizontally" })   -- split window horizontally
+vim.keymap.set("n", "<leader>se", "<C-w>=", { desc = "Make splits equal size" })      -- make split windows equal width & height
 vim.keymap.set("n", "<leader>sx", "<cmd>close<CR>", { desc = "Close current split" }) -- close current split window
 
 
@@ -32,10 +32,10 @@ vim.keymap.set('n', '<C-l>', '<C-w>l', opts)
 -- Plugin: telescope
 local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<C-p>', builtin.find_files, opts)
-vim.keymap.set('n', '<leader>ff', builtin.find_files, vim.tbl_extend("force", opts, {desc = "Find files"}))
-vim.keymap.set('n', '<leader>fg', builtin.live_grep, vim.tbl_extend("force", opts, {desc = "Live grep"}))
-vim.keymap.set('n', '<leader>fb', builtin.buffers, vim.tbl_extend("force", opts, {desc = "Buffer"}))
-vim.keymap.set('n', '<leader>fh', builtin.help_tags, vim.tbl_extend("force", opts, {desc = "Help tags"}))
+vim.keymap.set('n', '<leader>ff', builtin.find_files, vim.tbl_extend("force", opts, { desc = "Find files" }))
+vim.keymap.set('n', '<leader>fg', builtin.live_grep, vim.tbl_extend("force", opts, { desc = "Live grep" }))
+vim.keymap.set('n', '<leader>fb', builtin.buffers, vim.tbl_extend("force", opts, { desc = "Buffer" }))
+vim.keymap.set('n', '<leader>fh', builtin.help_tags, vim.tbl_extend("force", opts, { desc = "Help tags" }))
 builtin = nil
 
 -- move between tabs
@@ -51,10 +51,34 @@ vim.keymap.set("n", "<leader>gd", "<cmd>lua vim.lsp.buf.definition()<Enter>", op
 
 -- refresh the file explorer
 vim.keymap.set("n", "<leader>er", "<cmd>NvimTreeRefresh<CR>", { desc = "Refresh file explorer" })
-vim.keymap.set("n", "<leader>ex", ":NvimTreeToggle<Enter>", vim.tbl_extend("force", opts, {desc = "Close file explorer"}))
+vim.keymap.set("n", "<leader>ex", ":NvimTreeToggle<Enter>",
+  vim.tbl_extend("force", opts, { desc = "Close file explorer" }))
 
 -- refernce window lua
 local ref = require('reference')
-vim.keymap.set('n', '<leader>rp', ref.toggle,      { desc = 'Toggle reference panel' })
+vim.keymap.set('n', '<leader>rp', ref.toggle, { desc = 'Toggle reference panel' })
 vim.keymap.set('n', '<leader>rj', ref.scroll_down, { desc = 'Scroll reference down' })
-vim.keymap.set('n', '<leader>rk', ref.scroll_up,   { desc = 'Scroll reference up' })
+vim.keymap.set('n', '<leader>rk', ref.scroll_up, { desc = 'Scroll reference up' })
+
+-- Plugin: harpoon 2
+local harpoon = require('harpoon')
+local conf    = require('telescope.config').values
+
+local function harpoon_telescope()
+  local file_paths = {}
+  for _, item in ipairs(harpoon:list().items) do
+    table.insert(file_paths, item.value)
+  end
+  require('telescope.pickers').new({}, {
+    prompt_title = 'Harpoon',
+    finder       = require('telescope.finders').new_table({ results = file_paths }),
+    previewer    = conf.file_previewer({}),
+    sorter       = conf.generic_sorter({}),
+  }):find()
+end
+
+vim.keymap.set('n', '<leader>mx', function() harpoon:list():add() end, { desc = 'Harpoon: mark file' })
+vim.keymap.set('n', '<leader>mm', harpoon_telescope, { desc = 'Harpoon: telescope menu' })
+vim.keymap.set('n', '<leader>mn', function() harpoon:list():next() end, { desc = 'Harpoon: next file' })
+vim.keymap.set('n', '<leader>mp', function() harpoon:list():prev() end, { desc = 'Harpoon: prev file' })
+vim.keymap.set('n', '<leader>mr', function() harpoon:list():clear() end, { desc = 'Harpoon: reset all marks' })

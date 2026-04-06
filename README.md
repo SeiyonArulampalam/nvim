@@ -52,6 +52,18 @@
 
 ---
 
+## Harpoon 2 (File Marks)
+
+| Key | Action |
+|-----|--------|
+| `<leader>mx` | Mark current file |
+| `<leader>mm` | Browse marks (Telescope) |
+| `<leader>mn` | Next marked file |
+| `<leader>mp` | Previous marked file |
+| `<leader>mr` | Reset all marks |
+
+---
+
 ## LSP — Navigation & Actions
 
 > These keymaps are buffer-local and active whenever an LSP server attaches.
