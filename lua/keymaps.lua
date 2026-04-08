@@ -82,3 +82,6 @@ vim.keymap.set('n', '<leader>mm', harpoon_telescope, { desc = 'Harpoon: telescop
 vim.keymap.set('n', '<leader>mn', function() harpoon:list():next() end, { desc = 'Harpoon: next file' })
 vim.keymap.set('n', '<leader>mp', function() harpoon:list():prev() end, { desc = 'Harpoon: prev file' })
 vim.keymap.set('n', '<leader>mr', function() harpoon:list():clear() end, { desc = 'Harpoon: reset all marks' })
+
+-- Prevent  the cursor from jumping to the next occurrence
+vim.keymap.set('n', '*', '*N')
