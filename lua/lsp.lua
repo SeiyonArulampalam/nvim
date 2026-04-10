@@ -15,17 +15,17 @@ local on_attach = function(_, bufnr)
     vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, noremap = true, silent = true, desc = desc })
   end
 
-  map('n', 'gd',         vim.lsp.buf.definition,      'Go to definition')
-  map('n', 'gD',         vim.lsp.buf.declaration,     'Go to declaration')
-  map('n', 'gi',         vim.lsp.buf.implementation,  'Go to implementation')
-  map('n', 'gr',         vim.lsp.buf.references,      'List references')
-  map('n', 'K',          vim.lsp.buf.hover,           'Hover docs')
-  map('n', '<leader>rn', vim.lsp.buf.rename,          'Rename symbol')
-  map('n', '<leader>ca', vim.lsp.buf.code_action,     'Code action')
-  map('n', '[d',         vim.diagnostic.goto_prev,    'Prev diagnostic')
-  map('n', ']d',         vim.diagnostic.goto_next,    'Next diagnostic')
-  map('n', '<leader>e',  vim.diagnostic.open_float,   'Show diagnostic')
-  map('n', '<leader>q',  vim.diagnostic.setloclist,   'Diagnostics → loclist')
+  map('n', 'gd', vim.lsp.buf.definition, 'Go to definition')
+  map('n', 'gD', vim.lsp.buf.declaration, 'Go to declaration')
+  map('n', 'gi', vim.lsp.buf.implementation, 'Go to implementation')
+  map('n', 'gr', vim.lsp.buf.references, 'List references')
+  map('n', 'K', vim.lsp.buf.hover, 'Hover docs')
+  map('n', '<leader>rn', vim.lsp.buf.rename, 'Rename symbol')
+  map('n', '<leader>ca', vim.lsp.buf.code_action, 'Code action')
+  map('n', '[d', vim.diagnostic.goto_prev, 'Prev diagnostic')
+  map('n', ']d', vim.diagnostic.goto_next, 'Next diagnostic')
+  map('n', '<leader>e', vim.diagnostic.open_float, 'Show diagnostic')
+  map('n', '<leader>q', vim.diagnostic.setloclist, 'Diagnostics → loclist')
 end
 
 -- ── 3. Capabilities ─────────────────────────────────────────
@@ -35,7 +35,7 @@ local capabilities = require('cmp_nvim_lsp').default_capabilities()
 vim.lsp.config('lua_ls', {
   on_attach    = on_attach,
   capabilities = capabilities,
-  settings = {
+  settings     = {
     Lua = {
       runtime     = { version = 'LuaJIT' },
       diagnostics = { globals = { 'vim', 'require' } },
@@ -56,7 +56,7 @@ vim.lsp.config('pyright', {
 vim.lsp.config('clangd', {
   on_attach    = on_attach,
   capabilities = capabilities,
-  cmd = { 'clangd', '--offset-encoding=utf-16' },
+  cmd          = { 'clangd', '--offset-encoding=utf-16' },
 })
 
 vim.lsp.config('cmake', {
@@ -76,10 +76,10 @@ vim.lsp.enable({ 'lua_ls', 'pyright', 'clangd', 'cmake', 'julials' })
 -- ── 5. Formatting with conform.nvim ─────────────────────────
 require('conform').setup({
   formatters_by_ft = {
-    python  = { 'black' },
-    c       = { 'clang_format' },
-    cpp     = { 'clang_format' },
-    lua     = { 'stylua' },
+    python = { 'black' },
+    c      = { 'clang_format' },
+    cpp    = { 'clang_format' },
+    lua    = { 'stylua' },
   },
   format_on_save = {
     timeout_ms   = 500,
@@ -94,7 +94,7 @@ vim.diagnostic.config({
   underline        = true,
   update_in_insert = false,
   severity_sort    = true,
-  float = {
+  float            = {
     border = 'rounded',
     source = 'always',
   },
@@ -126,7 +126,7 @@ cmp.setup({
     ['<C-Space>'] = cmp.mapping.complete(),
     ['<C-e>']     = cmp.mapping.abort(),
     ['<CR>']      = cmp.mapping.confirm({ select = true }),
-    ['<Tab>'] = cmp.mapping(function(fallback)
+    ['<Tab>']     = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_next_item()
       elseif luasnip.expand_or_jumpable() then
@@ -135,7 +135,7 @@ cmp.setup({
         fallback()
       end
     end, { 'i', 's' }),
-    ['<S-Tab>'] = cmp.mapping(function(fallback)
+    ['<S-Tab>']   = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_prev_item()
       elseif luasnip.jumpable(-1) then
@@ -149,10 +149,10 @@ cmp.setup({
   formatting = {
     fields = { "kind", "abbr", "menu" },
     format = lspkind.cmp_format({
-      mode         = "symbol_text",
-      maxwidth     = 50,
+      mode          = "symbol_text",
+      maxwidth      = 50,
       ellipsis_char = "…",
-      menu = {
+      menu          = {
         nvim_lsp = "[LSP]",
         luasnip  = "[Snip]",
         nvim_lua = "[Lua]",
@@ -165,8 +165,8 @@ cmp.setup({
   sources = cmp.config.sources({
     { name = 'nvim_lsp' },
     { name = 'nvim_lua' },
-    { name = 'luasnip'  },
-    { name = 'path'     },
+    { name = 'luasnip' },
+    { name = 'path' },
   }, {
     { name = 'buffer', keyword_length = 5 },
   }),
@@ -208,17 +208,17 @@ cmp.setup({
 
 -- ── 8. Semantic token highlight overrides ───────────────────
 local function set_semantic_highlights()
-  vim.api.nvim_set_hl(0, '@lsp.type.namespace',     { link = '@module' })
-  vim.api.nvim_set_hl(0, '@lsp.type.module',        { bold = true, fg = '#e8b45f' })
-  vim.api.nvim_set_hl(0, '@lsp.type.class',         { fg = '#7fbfff', bold = true })
-  vim.api.nvim_set_hl(0, '@lsp.type.interface',     { fg = '#7fbfff', italic = true })
-  vim.api.nvim_set_hl(0, '@lsp.type.enum',          { fg = '#c0a060' })
-  vim.api.nvim_set_hl(0, '@lsp.type.enumMember',    { fg = '#b8d7a3' })
-  vim.api.nvim_set_hl(0, '@lsp.type.parameter',     { italic = true })
-  vim.api.nvim_set_hl(0, '@lsp.type.property',      { fg = '#9cdcfe' })
-  vim.api.nvim_set_hl(0, '@lsp.type.type',          { fg = '#4ec9b0' })
-  vim.api.nvim_set_hl(0, '@lsp.mod.readonly',       { italic = true })
-  vim.api.nvim_set_hl(0, '@lsp.mod.deprecated',     { strikethrough = true })
+  vim.api.nvim_set_hl(0, '@lsp.type.namespace', { link = '@module' })
+  vim.api.nvim_set_hl(0, '@lsp.type.module', { bold = true, fg = '#e8b45f' })
+  vim.api.nvim_set_hl(0, '@lsp.type.class', { fg = '#7fbfff', bold = true })
+  vim.api.nvim_set_hl(0, '@lsp.type.interface', { fg = '#7fbfff', italic = true })
+  vim.api.nvim_set_hl(0, '@lsp.type.enum', { fg = '#c0a060' })
+  vim.api.nvim_set_hl(0, '@lsp.type.enumMember', { fg = '#b8d7a3' })
+  vim.api.nvim_set_hl(0, '@lsp.type.parameter', { italic = true })
+  vim.api.nvim_set_hl(0, '@lsp.type.property', { fg = '#9cdcfe' })
+  vim.api.nvim_set_hl(0, '@lsp.type.type', { fg = '#4ec9b0' })
+  vim.api.nvim_set_hl(0, '@lsp.mod.readonly', { italic = true })
+  vim.api.nvim_set_hl(0, '@lsp.mod.deprecated', { strikethrough = true })
   vim.api.nvim_set_hl(0, '@lsp.mod.defaultLibrary', { italic = true })
 end
 
