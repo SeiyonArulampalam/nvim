@@ -85,3 +85,9 @@ vim.keymap.set('n', '<leader>mr', function() harpoon:list():clear() end, { desc 
 
 -- Prevent  the cursor from jumping to the next occurrence
 vim.keymap.set('n', '*', '*N')
+
+-- toggle off and on diagnostics
+vim.keymap.set('n', '<leader>dt', function()
+  local current = vim.diagnostic.config().virtual_text
+  vim.diagnostic.config({ virtual_text = not current })
+end, { desc = 'Toggle diagnostic virtual text' })
